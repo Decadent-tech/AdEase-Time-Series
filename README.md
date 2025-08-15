@@ -13,7 +13,7 @@ Two datasets are used:
 2. **Exog_Campaign_eng** — Exogenous data representing external campaign activity that may influence views.
 
 
-## 📌 Project Overview
+##  Project Overview
 This project performs **time series analysis and forecasting** of Wikipedia page views using different statistical and machine learning approaches.  
 It explores the impact of **language, access type, and access origin** on page views and applies **SARIMAX** and **Facebook Prophet** (with and without exogenous variables) to predict future trends.
 
@@ -25,14 +25,14 @@ Key steps include:
 - Forecasting using Facebook Prophet (with/without exogenous variables).
 - Model evaluation using **MAPE, RMSE, and MAE**.
 
-## ⚙️ Installation & Setup
-### 1️⃣ Clone the repository
+## Installation & Setup
+### Clone the repository
 
 git clone https://github.com/Decadent-tech/AdEase-Time-Series
 cd AdEase-Time-Series
 
 
-### 2️⃣ Install dependencies
+###  Install dependencies
     pip install -r requirements.txt
 
 ### requirements.txt should include:
@@ -44,10 +44,10 @@ cd AdEase-Time-Series
     prophet
     scikit-learn
 
-### 📊 Exploratory Data Analysis
+###  Exploratory Data Analysis
 
     Split the Page column into Title, Language, Access_type, and Access_origin.
-    
+
 ### Handle missing values:
         Drop rows with all values missing.
         Drop rows with >300 missing values.
@@ -58,7 +58,7 @@ Language distribution.
 Access type and origin.
 Trends in average daily views by language.
 
-### 🔍 Time Series Analysis
+###  Time Series Analysis
 
 Focus on English (en) page views for forecasting.
 Interpolate missing values and clip outliers.
@@ -66,7 +66,7 @@ Use ADF Test to check stationarity.
 Apply differencing to make series stationary.
 Examine ACF and PACF plots for ARIMA order selection.
 
-### 📈 Forecasting Models
+###  Forecasting Models
 1. SARIMAX
 Without exogenous variables.
 Seasonal order set as (1,1,1,7) for weekly seasonality.
