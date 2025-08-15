@@ -271,6 +271,13 @@ m.fit(df2[:-20])  # Fit the model on all but the last 20 days
 future = m.make_future_dataframe(periods=20,freq="D")
 forecast = m.predict(future)
 fig = m.plot(forecast)
+fig.suptitle('FB Prophet Forecast without Exogenous Variable', fontsize=16)
+y_true = df2['y'].values
+y_pred = forecast['yhat'].values
+plot.plot(y_true, label='Actual')
+plot.plot(y_pred, label='Predicted')
+plot.legend()
+plot.show()
      
 #FB prophet with exogenous variable
 model2=Prophet(interval_width=0.9, weekly_seasonality=True, changepoint_prior_scale=1)
