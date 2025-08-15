@@ -260,3 +260,46 @@ print("mape:",mape)
 print("rsme:",rmse)
 
 # FB Prophet 
+#FB prophet without using exogenous variable
+df2 = df_en.copy()
+df2 = df2.reset_index()
+df2.columns = ['ds', 'y']  # Prophet expects 'ds' for date and 'y' for value
+from prophet import Prophet
+m = Prophet(weekly_seasonality=True)
+m.fit(df2[:-20])  # Fit the model on all but the last 20 days
+
+future = m.make_future_dataframe(periods=20,freq="D")
+forecast = m.predict(future)
+fig = m.plot(forecast)
+     
+#FB prophet with exogenous variable
+model2=Prophet(interval_width=0.9, weekly_seasonality=True, changepoint_prior_scale=1)
+model2.add_regressor('exog')
+# Add exogenous variable to df2
+df2['exog'] = ex[:len(df2)]
+model2.fit(df2[:-20])
+forecast2 = model2.predict(df2)
+fig = model2.plot(forecast2)
+y_true = df2['y'].values
+y_pred = forecast2['yhat'].values
+plot.plot(y_true, label='Actual')
+plot.plot(y_pred, label='Predicted')
+plot.legend()
+plot.show()
+     
+# Metrics for FB Prophet
+mape = np.mean(np.abs(forecast2['yhat'][-20:] - df2['y'][-20:].values)/np.abs(df2['y'][-20:].values))
+print("mape:",mape)
+# The FB Prophet model is able to capture the seasonality and trend in the data and gives a good forecast for the next 20 days.
+
+''' 
+Conclusion
+SARIMAX is performing better in comparision to ARIMA or FB prophet.
+
+We can easily see that there is Seasonality and Trend in the data.
+
+Differencing of 1 lap is required in the data.
+
+The value of PDQ and PDQS is choosen after multiple tries.
+
+'''
