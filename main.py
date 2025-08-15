@@ -159,3 +159,104 @@ plot_acf(df_en.views, lags=50) # autocorrelation function
 plot.show()
 plot_pacf(df_en.views, lags=50)# partial autocorrelation function
 plot.show()
+
+
+# Let's check if our TS is stationary or not with the help of Dickey Fuller Test
+
+
+import statsmodels.api as sm
+def adf_test(dataset):
+   pvalue = sm.tsa.stattools.adfuller(dataset)[1]
+   if pvalue <= 0.05:
+      print('Sequence is stationary')
+   else:
+      print('Sequence is not stationary')
+
+adf_test(df_en.views)
+     
+#Sequence is not stationary
+
+#As the TS is not stationary let's use differencing to make it stationary
+df_en_st = df_en.copy()
+df_en_st.views = df_en_st.views.diff(1)
+df_en_st.dropna(inplace=True)
+adf_test(df_en_st.views) # dickey fuller test again
+#Sequence is stationary
+
+# Differencing has worked here. The TS is now stationary and can be used for forecasting.
+
+plot_acf(df_en_st.views);
+plot.show()
+plot_pacf(df_en_st.views);
+plot.show()
+
+# Now we can use SARIMAX model for forecasting
+
+import statsmodels.api as sm
+train=df_en[:520] # Use the previous  520 days for testing
+test=df_en[520:] # Use the last 35 days for testing
+model=sm.tsa.statespace.SARIMAX(train,order=(4, 1, 3))
+results=model.fit()
+fc=results.forecast(30,dynamic=True)
+# Make as pandas series
+fc_series = pd.Series(fc)
+# Plot
+train.index=train.index.astype('datetime64[ns]')
+test.index=test.index.astype('datetime64[ns]')
+plot.figure(figsize=(12,5), dpi=100)
+plot.plot(train, label='training')
+plot.plot(test, label='actual')
+plot.plot(fc_series, label='forecast')
+plot.title('Forecast vs Actuals')
+plot.legend(loc='upper left', fontsize=8)
+plot.show()
+
+# metrics to check the accuracy of the model
+mape = np.mean(np.abs(fc - test.views)/np.abs(test.views))
+rmse = np.mean((fc - test.views)**2)**.5
+print("mape:",mape)
+print("rsme:",rmse)
+
+# Using exog in SARIMAX 
+
+ex=exog['Exog'].to_numpy()
+
+train=df_en[:520]
+test=df_en[520:]
+model=sm.tsa.statespace.SARIMAX(train,order=(4, 1, 3),seasonal_order=(1,1,1,7),exog=ex[:520])
+results=model.fit()
+
+fc=results.forecast(30,dynamic=True,exog=pd.DataFrame(ex[520:]))
+
+# Make as pandas series
+fc_series = pd.Series(fc)
+# Plot
+train.index=train.index.astype('datetime64[ns]')
+test.index=test.index.astype('datetime64[ns]')
+plot.figure(figsize=(12,5), dpi=100)
+plot.plot(train, label='training')
+plot.plot(test, label='actual')
+plot.plot(fc_series, label='forecast')
+plot.title('Forecast vs Actuals')
+plot.legend(loc='upper left', fontsize=8)
+plot.show()
+
+# metrics to check the accuracy of the model
+from sklearn.metrics import (
+    mean_squared_error as mse,
+    mean_absolute_error as mae,
+    mean_absolute_percentage_error as mape
+)
+
+# Creating a function to print values of all these metrics.
+def performance(actual, predicted):
+    print('MAE :', round(mae(actual, predicted), 3))
+    print('RMSE :', round(mse(actual, predicted)**0.5, 3))
+    print('MAPE:', round(mape(actual, predicted), 3))
+
+mape = np.mean(np.abs(fc - test.views)/np.abs(test.views))
+rmse = np.mean((fc - test.views)**2)**.5
+print("mape:",mape)
+print("rsme:",rmse)
+
+# FB Prophet 
