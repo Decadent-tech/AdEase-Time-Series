@@ -1,9 +1,9 @@
+# Wikipedia Page Views Forecasting
+
 Ad Ease is an ads and marketing based company helping businesses elicit maximum clicks @ minimum cost. AdEase is an ad infrastructure to help businesses promote themselves easily, effectively, and economically. The interplay of 3 AI modules - Design, Dispense, and Decipher, come together to make it this an end-to-end 3 step process digital advertising solution for all.You are working in the Data Science team of Ad ease trying to understand the per page view report for different wikipedia pages for 550 days, and forecasting the number of views so that you can predict and optimize the ad placement for your clients. You are provided with the data of 145k wikipedia pages and daily view count for each of them. Your clients belong to different regions and need data on how their ads will perform on pages in different languages.
 
 ## Data Dictionary:
-
-## 📂 Dataset
-## Dataset:  https://drive.google.com/drive/folders/1mdgQscjqnCtdg7LGItomyK0abN6lcHBb
+  https://drive.google.com/drive/folders/1mdgQscjqnCtdg7LGItomyK0abN6lcHBb
 Two datasets are used:
 
 1. **train_1.csv** — Wikipedia page views dataset containing:
@@ -12,9 +12,6 @@ Two datasets are used:
 
 2. **Exog_Campaign_eng** — Exogenous data representing external campaign activity that may influence views.
 
-
-
-# Wikipedia Page Views Forecasting
 
 ## 📌 Project Overview
 This project performs **time series analysis and forecasting** of Wikipedia page views using different statistical and machine learning approaches.  
@@ -31,25 +28,26 @@ Key steps include:
 ## ⚙️ Installation & Setup
 ### 1️⃣ Clone the repository
 
-git clone https://github.com/your-username/wiki-pageviews-forecasting.git
-cd wiki-pageviews-forecasting
+git clone https://github.com/Decadent-tech/AdEase-Time-Series
+cd AdEase-Time-Series
 
 
 ### 2️⃣ Install dependencies
     pip install -r requirements.txt
 
 ### requirements.txt should include:
-pandas
-numpy
-matplotlib
-seaborn
-statsmodels
-prophet
-scikit-learn
+    pandas
+    numpy
+    matplotlib
+    seaborn
+    statsmodels
+    prophet
+    scikit-learn
 
 ### 📊 Exploratory Data Analysis
 
     Split the Page column into Title, Language, Access_type, and Access_origin.
+    
 ### Handle missing values:
         Drop rows with all values missing.
         Drop rows with >300 missing values.
@@ -71,16 +69,15 @@ Examine ACF and PACF plots for ARIMA order selection.
 ### 📈 Forecasting Models
 1. SARIMAX
 Without exogenous variables.
-With exogenous variables (Exog_Campaign_eng).
 Seasonal order set as (1,1,1,7) for weekly seasonality.
 
 2. Facebook Prophet
 Without exogenous variables.
 With exogenous variables as regressors.
 
-### 📏 Evaluation Metrics
+###  Evaluation Metrics
 The following metrics are computed:
-MAE – Mean Absolute Error
+
 RMSE – Root Mean Squared Error
 MAPE – Mean Absolute Percentage Error
 
@@ -88,7 +85,7 @@ Example:
 mape: 0.05
 rsme: 161.59
 
-### 📌 Key Insights
+###  Key Insights
 
 English pages dominate traffic compared to other languages.
 Significant traffic peaks on specific dates (e.g., 2016-08-04 for en and ru).
@@ -96,7 +93,7 @@ SARIMAX with exogenous variables generally outperforms FB Prophet in this datase
 The time series has both trend and seasonality components.
 Differencing order of 1 is required for stationarity.
 
-### 🚀 How to Run
+###  How to Run
 python main.py
 
 ### The script will:
@@ -106,13 +103,13 @@ Run SARIMAX and Prophet models.
 Plot forecasts vs. actuals.
 Print evaluation metrics.
 
-### 📜 Conclusion
+### Conclusion
 
 SARIMAX is the best-performing model for this dataset.
 External campaign data improves forecasting accuracy.
 Prophet is good at capturing seasonality but underperforms compared to SARIMAX in this case.
 
-### 📎 References
+### References
 
 Statsmodels Documentation  
 Facebook Prophet Documentation
